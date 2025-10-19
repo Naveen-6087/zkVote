@@ -111,6 +111,8 @@ async function main() {
             const minAge = parseInt(args[3]) || 18;
             
             await generateAgeProof(age, secret, minAge);
+            console.log(`${colors.green}Process completed successfully${colors.reset}`);
+            process.exit(0);
         } else if (command === "vote") {
             const vote = parseInt(args[1]) || 1;
             const voterSecret = parseInt(args[2]) || Math.floor(Math.random() * 1000000);
@@ -118,6 +120,8 @@ async function main() {
             const pollId = parseInt(args[4]) || 1;
             
             await generateVoteProof(vote, voterSecret, nullifier, pollId);
+            console.log(`${colors.green}Process completed successfully${colors.reset}`);
+            process.exit(0);
         } else {
             console.log(`${colors.yellow}Usage:${colors.reset}`);
             console.log("  node generateProof.js age [age] [secret] [minAge]");
@@ -125,6 +129,7 @@ async function main() {
             console.log("\nExamples:");
             console.log("  node generateProof.js age 25 12345 18");
             console.log("  node generateProof.js vote 1 98765 54321 1");
+            process.exit(1);
         }
     } catch (error) {
         console.error(`${colors.red}Error: ${error.message}${colors.reset}`);
@@ -137,5 +142,8 @@ module.exports = { generateAgeProof, generateVoteProof };
 
 // Run main if called directly
 if (require.main === module) {
-    main();
+    main().catch(error => {
+        console.error(`${colors.red}Unhandled error: ${error.message}${colors.reset}`);
+        process.exit(1);
+    });
 }

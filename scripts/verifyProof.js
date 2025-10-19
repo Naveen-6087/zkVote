@@ -92,9 +92,11 @@ async function main() {
     try {
         if (command === "age") {
             const isValid = await verifyAgeProof();
+            console.log(`${colors.green}Verification completed successfully${colors.reset}`);
             process.exit(isValid ? 0 : 1);
         } else if (command === "vote") {
             const isValid = await verifyVoteProof();
+            console.log(`${colors.green}Verification completed successfully${colors.reset}`);
             process.exit(isValid ? 0 : 1);
         } else if (command === "calldata") {
             const circuitType = args[1];
@@ -103,11 +105,14 @@ async function main() {
                 process.exit(1);
             }
             await generateCallData(circuitType);
+            console.log(`${colors.green}Call data generation completed successfully${colors.reset}`);
+            process.exit(0);
         } else {
             console.log(`${colors.yellow}Usage:${colors.reset}`);
             console.log("  node verifyProof.js age");
             console.log("  node verifyProof.js vote");
             console.log("  node verifyProof.js calldata [ageVerification|voteCommitment]");
+            process.exit(1);
         }
     } catch (error) {
         console.error(`${colors.red}Error: ${error.message}${colors.reset}`);
@@ -118,5 +123,8 @@ async function main() {
 module.exports = { verifyAgeProof, verifyVoteProof, generateCallData };
 
 if (require.main === module) {
-    main();
+    main().catch(error => {
+        console.error(`${colors.red}Unhandled error: ${error.message}${colors.reset}`);
+        process.exit(1);
+    });
 }
