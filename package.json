@@ -1,0 +1,45 @@
+{
+  "name": "zkvote",
+  "version": "1.0.0",
+  "description": "Zero-knowledge voting system using Circom and SnarkJS",
+  "main": "index.js",
+  "scripts": {
+    "compile": "bash scripts/compile.sh",
+    "compile:win": "powershell -ExecutionPolicy Bypass -File scripts/compile.ps1",
+    "setup": "bash scripts/setup.sh",
+    "setup:win": "powershell -ExecutionPolicy Bypass -File scripts/setup.ps1",
+    "prove:age": "node scripts/generateProof.js age",
+    "prove:vote": "node scripts/generateProof.js vote",
+    "verify:age": "node scripts/verifyProof.js age",
+    "verify:vote": "node scripts/verifyProof.js vote",
+    "calldata:age": "node scripts/verifyProof.js calldata ageVerification",
+    "calldata:vote": "node scripts/verifyProof.js calldata voteCommitment",
+    "test": "mocha test/**/*.test.js",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "server": "node server.js",
+    "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
+    "demo": "npm run prove:age 25 12345 18 && npm run verify:age && npm run prove:vote 1 98765 54321 1 && npm run verify:vote"
+  },
+  "keywords": [
+    "zero-knowledge",
+    "voting",
+    "circom",
+    "snarkjs",
+    "zk-snark",
+    "privacy",
+    "blockchain"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "snarkjs": "^0.7.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "concurrently": "^7.6.0"
+  }
+}
